@@ -14,6 +14,7 @@ By default the data is cached for 5days/3hour.
 
 # The returned data contains elements such as:
 
+Date
 Temperature
 Weather description
 Humidity
