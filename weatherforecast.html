@@ -1,0 +1,66 @@
+<!-- %days/3 hour weather forecast -->
+<html>
+    <head>
+		<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+		<title>Weather Forecast</title>
+		<script>
+			//display weather details
+			function displayWeather(data)
+			{
+				/* now can access the different properties available.*/
+				var forecastTable="<h2 style='color: #d26c22;text-align:center;'>5 days/3 hour weather forecast</h2>"
+				/* display city and country from api */
+				forecastTable+="<h2 style='text-align:center;'>Weather in "+data.city.name+","+data.city.country+"</h2>";
+				forecastTable+="<h2 style='text-align:center;'>"+data.list[0].main.temp+" F</h2>";
+				/*display table heading */
+				forecastTable+="<table> <tr><th>Date</th>";
+					forecastTable+="<th>Cloudiness</th>";
+					forecastTable+= "<th>Temparature(Min)</th>";
+					forecastTable+="<th>Temparature(Max)</th>";
+					forecastTable+="<th>Pressure</th>";
+					forecastTable+="<th>Humidity</th></tr>";
+					var list_length=data.list.length;
+					/*length of list in api and display tempature and date in table*/
+					for(var i=0;i<list_length;i++)
+					{ 
+						forecastTable+="<tr><td style='width: 150px;padding-top:10px'>"+ data.list[i].dt_txt + "</td>";
+						forecastTable+="<td style='width: 100px; text-align: left;'>"+data.list[i].weather[0].description+"</td>";
+						forecastTable+="<td style='width: 100px; text-align: right;'>"+data.list[i].main.temp_min+" F</td>";
+						forecastTable+="<td style='width: 100px; text-align: right;'>"+data.list[i].main.temp_max+" F</td>";
+						forecastTable+="<td style='width: 100px; text-align: right;'>"+data.list[i].main.pressure+" hpa</td>";
+						forecastTable+="<td style='width: 100px; text-align: right;'>"+data.list[i].main.humidity+"%</td></tr>";
+					}  
+				forecastTable+="</table>";
+				document.write( forecastTable);
+				/*css for table */
+				var forecastStyle = document.createElement('style')
+				forecastStyle.innerHTML = "table>tbody>tr>td, table>tbody>tr>th, table>tfoot>tr>td, table>tfoot>tr>th,table>thead>tr>td {padding: 8px;line-height: 1.42857143;vertical-align: top;border-top: 1px solid #ddd;}";
+				forecastStyle.innerHTML+="table {margin: 0px auto;}";
+				forecastStyle.innerHTML += "tr:nth-child(even){background-color: #f2f2f2}";
+				forecastStyle.innerHTML+="th{background-color: #ffa500;color: white;}";
+				document.body.appendChild(forecastStyle);
+			}
+      </script>
+	   <script>
+			function callApi() {
+				getWeather(function (data) {
+					displayWeather(data);          
+				});
+			}
+			function getWeather(callback) {
+			   
+			    var apiKey='ab484ae68a0f08b492ea454a499f728c';
+				var weather = 'http://api.openweathermap.org/data/2.5/forecast?q=Bangalore&APPID='+apiKey;
+				$.ajax({
+					dataType: "json",
+					url: weather,
+					success: callback
+				});
+			}
+		</script>
+    </head>
+	<!-- Onload callapi function -->
+    <body onload="callApi();">
+	
+    </body>
+</html>
